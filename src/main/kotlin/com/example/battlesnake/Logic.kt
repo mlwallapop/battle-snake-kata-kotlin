@@ -33,10 +33,10 @@ fun decideMove(request: MoveRequest): Direction {
 
         // Use information in the request to prevent your Battlesnake from moving beyond the boundaries of the board.
         when(direction){
-            Direction.UP -> newPosition.y <= boardHeight
-            Direction.DOWN -> newPosition.y >= boardHeight
-            Direction.LEFT -> newPosition.x >= boardWidth
-            Direction.RIGHT -> newPosition.x <= boardWidth
+            Direction.UP -> newPosition.y < boardHeight
+            Direction.DOWN -> newPosition.y >= 0
+            Direction.LEFT -> newPosition.x >= 0
+            Direction.RIGHT -> newPosition.x < boardWidth
         }
 
         // TODO: Step 2 - Don't hit yourself.
