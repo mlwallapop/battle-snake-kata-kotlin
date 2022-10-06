@@ -18,37 +18,42 @@ fun decideMove(request: MoveRequest): Direction {
         // TODO: Step 1 - Don't hit walls.
         val boardWidth = request.board.width
         val boardHeight = request.board.height
-        fun donesntHitHimself() = !request.you.body.contains(newPosition)
-        fun checkCanMoveUp() =
-            newPosition.y < boardHeight && donesntHitHimself()
-
-        fun checkCanMoveDown() =
-            newPosition.y >= 0 && donesntHitHimself()
-
-        fun checkCanMoveRight() =
-            newPosition.x < boardWidth && donesntHitHimself()
-
-        fun checkCanMoveLeft() =
-            newPosition.x >= 0 && donesntHitHimself()
 
 
         // Use information in the request to prevent your Battlesnake from moving beyond the boundaries of the board.
+
+        // TODO: Step 2 - Don't hit yourself.
+        fun donesntHitHimself() = !request.you.body.contains(newPosition)
+
+        // TODO: Step 3 - Don't collide with others.
+        // Use information in the request to prevent your Battlesnake from colliding with others.
+        fun hitsOtherSnake() =
+            request.board.snakes.stream().anyMatch { snake -> snake.body.contains(newPosition) }
+
+
+        // TODO: Step 4 - Find food.
+        // Use information in the request to seek out and find food.
+
+
+
+        fun checkCanMoveUp() =
+            newPosition.y < boardHeight && donesntHitHimself() && !hitsOtherSnake()
+
+        fun checkCanMoveDown() =
+            newPosition.y >= 0 && donesntHitHimself() && !hitsOtherSnake()
+
+        fun checkCanMoveRight() =
+            newPosition.x < boardWidth && donesntHitHimself() && !hitsOtherSnake()
+
+        fun checkCanMoveLeft() =
+            newPosition.x >= 0 && donesntHitHimself() && !hitsOtherSnake()
+
         when(direction){
             Direction.UP -> checkCanMoveUp()
             Direction.DOWN -> checkCanMoveDown()
             Direction.LEFT -> checkCanMoveLeft()
             Direction.RIGHT -> checkCanMoveRight()
         }
-
-        // TODO: Step 2 - Don't hit yourself.
-        // Use information in the request to prevent your Battlesnake from colliding with itself.
-        // val myBody = request.you.body
-
-        // TODO: Step 3 - Don't collide with others.
-        // Use information in the request to prevent your Battlesnake from colliding with others.
-
-        // TODO: Step 4 - Find food.
-        // Use information in the request to seek out and find food.
     }
 
     // Finally, choose a move from the available safe moves.
